@@ -15,11 +15,26 @@ This plugin queries your The Next Generation of Genealogy Sitebuilding (TNG) RSS
 
 There are plenty of filters and action hooks to modify the post content before the post is created. The plugin is also ready for localization.
 
+### Filters
+
+The following filters are available. All the filters occur before the new post is created.
+
+* tng_wp_rss_list_class - add a class name to the unordered list element in the post content, defaults to 'list-unstyled'.
+* tng_wp_rss_before_content - add any text or other content just before the list of updates is displayed in the post.
+* tng_wp_rss_after_content - add any text or other content just after the list of updates is displayed in the post.
+* tng_wp_rss_post_content - add anything or modify the full html of the post.
+
+### Actions
+
+The following actions are available.
+
+* tng_wp_rss_new_post_id - the newly created post ID is passed. You could add a new category or tag or send a Tweet with the new post link.
+
 ## Installation
 
 1. Download the plugin from Github
 2. Upload `tng-wp-rss` folder to the `/wp-content/plugins/` directory
-3. Activate the plugin through the \'Plugins\' menu in WordPress
+3. Activate the plugin through the Plugins menu in WordPress
 
 ## Changelog
 
