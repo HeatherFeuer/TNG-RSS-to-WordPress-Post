@@ -2,7 +2,7 @@
 /*
 Plugin Name: TNG RSS to WordPress Post
 Description: Uses the TNG-WP integration plugin to import the TNG RSS feed and create a new post for each new entry per date.
-Version: 1.0
+Version: 1.1
 Author: Nate Jacobs
 Author URI: http://natejacobs.com
 License: GPL2
@@ -50,6 +50,9 @@ class TNG_RSS {
 	public function __construct() {
 		add_action('plugins_loaded', array($this, 'localization'));
 		register_activation_hook(__FILE__, array($this, 'activation'));
+		register_deactivation_hook(__FILE__, array($this, 'deactivation'));
+		// uncomment the line below for testing purposes, it will trigger the update script every time a page is viewed on the dashboard.
+		//add_action('admin_init', [$this, 'tng_wp_rss_update']);
 		
 		$this->tng_rss_category = __('Genealogy Updates', 'tng-wp-rss');
 	}
@@ -82,6 +85,29 @@ class TNG_RSS {
 	}
 	
 	/** 
+	 *	Unschedule the cron event on deactivation.
+	 *
+	 *	@author		Nate Jacobs
+	 *	@date		9/14/14
+	 *	@since		1.1
+	 */
+	public function deactivation() {
+		// make sure the user can activate/deactivate plugins
+		if(!current_user_can('activate_plugins')) {
+			return;
+		}
+		
+		// get the name of the plugin
+        $plugin = isset($_REQUEST['plugin']) ? $_REQUEST['plugin'] : '';
+        
+        // make sure it is a valid request
+        check_admin_referer("deactivate-plugin_{$plugin}");
+        
+        // unschedule the cron event
+        wp_unschedule_event(wp_next_scheduled('tng_wp_rss_update'), 'tng_wp_rss_update');
+	}
+	
+	/** 
 	 *	Retrieve the newest updates from TNG RSS feed.
 	 *	Create a new post for each day.
 	 *
@@ -94,7 +120,8 @@ class TNG_RSS {
 		
 		// only process the feed if there is a valid URL
 		if($url) {
-			$feed = fetch_feed($tng_url.'tngrss.php');
+			$feed = fetch_feed($url.'tngrss.php');
+			$feed = fetch_feed('http://www.mosleyfamilies.net/tng/tngrss.php');
 			
 			if(!is_wp_error($feed)) {
 				$maxitems = $feed->get_item_quantity();
@@ -174,8 +201,15 @@ class TNG_RSS {
 				
 				foreach($item as $post) {
 					$title = $post->get_title();
+					
+					if(!empty($post->get_description())) {
+						$description = '('.html_entity_decode($post->get_description()).')';
+					} else {
+						$description = '';
+					}
+					
 					$content .= '<li>';
-					$content .= '<a href="'.$post->get_permalink().'">'.$title.'</a>';
+					$content .= '<a href="'.$post->get_permalink().'">'.$title.'</a> '.$description;
 					$content .= '</li>';
 				}
 				$content .= '</ul>';
@@ -203,20 +237,44 @@ class TNG_RSS {
 				$content = apply_filters('tng_wp_rss_post_content', $content);
 				
 				// translators: post title date format
-				$date_format = __('F m Y', 'tng-wp-rss');
+				$date_format = __('F d Y', 'tng-wp-rss');
 				
 				$post_title = sprintf(__('TNG Updates for %s', 'tng-wp-rss'), date_i18n($date_format, $date));
 				
+				/** 
+				 *	Filter the post title before the post is created.
+				 *
+				 *	@author		Nate Jacobs
+				 *	@date		9/14/14
+				 *	@since		1.0
+				 *
+				 *	@param		string	$post_title	The post title.
+				 *	@param		string	$content		The html content of the post.
+				 *	@param		string	$date		The date of the update in timestamp format.
+				 */
+				$post_title = apply_filters('tng_wp_rss_post_title', $post_title, $content, $date);
+				
 				$category = get_cat_ID($this->tng_rss_category);
 				
-				$admin = get_users(array('role' => 'administrator'));
+				$author_id = get_users(array('role' => 'administrator'));
+				
+				/** 
+				 *	Filter the post author. A user ID is expected in return.
+				 *
+				 *	@author		Nate Jacobs
+				 *	@date		9/14/14
+				 *	@since		1.0
+				 *
+				 *	@param		int	$author_id[0]->ID	The user ID of the post author.
+				 */
+				$post_author = apply_filters('tng_wp_rss_post_author_id', $author_id[0]->ID);
 				
 				$args = array(
 					'post_content' => $content,
 	                'post_title' => wp_strip_all_tags($post_title),
 	                'post_status' => 'publish',
 	                'post_category' => array($category),
-	                'post_author' => $admin[0]->ID,
+	                'post_author' => $post_author,
 	                'post_date' => date('Y-m-d H:i:s', $date)
 
 				);
