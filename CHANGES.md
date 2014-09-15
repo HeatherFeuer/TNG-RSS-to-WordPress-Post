@@ -1,5 +1,5 @@
 #### 1.2
-* Add support for automatic updating with the Github Updater plugin (https://github.com/afragen/github-updater)
+* Add support for automatic updating with the [Github Updater plugin](https://github.com/afragen/github-updater)
 
 #### 1.1
 * Fix misnamed variable in fetch_feed()
