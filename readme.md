@@ -39,17 +39,3 @@ The following actions are available.
 1. Download the plugin from Github
 2. Upload `tng-wp-rss` folder to the `/wp-content/plugins/` directory
 3. Activate the plugin through the Plugins menu in WordPress
-
-## Changelog
-
-### 1.2
-* Add support for automatic updating with the Github Updater plugin (https://github.com/afragen/github-updater)
-
-### 1.1
-* Fix misnamed variable in fetch_feed()
-* Add two new filters to change the post author and post title
-* Add description from RSS feed to post content
-
-### 1.0
-
-* First release of plugin
