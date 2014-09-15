@@ -4,7 +4,7 @@
 * Tags: genealogy, rss, post
 * Requires at least: 4.0
 * Tested up to: 4.0
-* Stable tag: 1.1
+* Stable tag: 1.2
 * License: GPL2
 
 Uses the TNG-WP integration plugin to import the TNG RSS feed and create a new post for each new entry per date.
@@ -41,6 +41,9 @@ The following actions are available.
 3. Activate the plugin through the Plugins menu in WordPress
 
 ## Changelog
+
+### 1.2
+* Add support for automatic updating with the Github Updater plugin (https://github.com/afragen/github-updater)
 
 ### 1.1
 * Fix misnamed variable in fetch_feed()

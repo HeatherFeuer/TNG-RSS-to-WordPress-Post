@@ -2,12 +2,13 @@
 /*
 Plugin Name: TNG RSS to WordPress Post
 Description: Uses the TNG-WP integration plugin to import the TNG RSS feed and create a new post for each new entry per date.
-Version: 1.1
+Version: 1.2
 Author: Nate Jacobs
 Author URI: http://natejacobs.com
 License: GPL2
 Text Domain: tng-wp-rss
 Domain Path: /languages
+GitHub Plugin URI: NateJacobs/TNG-RSS-to-WordPress-Post
 */
 
 // this plugin is based off the idea of Marcus Zuhorst and created by Andreas Krischer (email: kontakt@akbyte.com).
