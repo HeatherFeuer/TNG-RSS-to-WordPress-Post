@@ -204,7 +204,8 @@ class TNG_RSS {
 					$title = $post->get_title();
 					
 					if(!empty($post->get_description())) {
-						$description = '('.html_entity_decode($post->get_description()).')';
+						$description = $post->get_description();
+						$description = '('.html_entity_decode($description).')';
 					} else {
 						$description = '';
 					}
