@@ -202,9 +202,8 @@ class TNG_RSS {
 				
 				foreach($item as $post) {
 					$title = $post->get_title();
-					
-					if(!empty($post->get_description())) {
-						$description = $post->get_description();
+					$description = $post->get_description();
+					if(!empty($description)) {
 						$description = '('.html_entity_decode($description).')';
 					} else {
 						$description = '';
