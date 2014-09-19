@@ -1,3 +1,6 @@
+#### 1.3
+* Make plugin compatible with PHP 5.3 and 5.4.
+
 #### 1.2
 * Add support for automatic updating with the [Github Updater plugin](https://github.com/afragen/github-updater)
 
