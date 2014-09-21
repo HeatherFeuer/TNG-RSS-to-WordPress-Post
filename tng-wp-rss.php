@@ -2,7 +2,7 @@
 /*
 Plugin Name: TNG RSS to WordPress Post
 Description: Uses the TNG-WP integration plugin to import the TNG RSS feed and create a new post for each new entry per date.
-Version: 1.3
+Version: 1.4
 Author: Nate Jacobs
 Author URI: http://natejacobs.com
 License: GPL2
@@ -122,7 +122,6 @@ class TNG_RSS {
 		// only process the feed if there is a valid URL
 		if($url) {
 			$feed = fetch_feed($url.'tngrss.php');
-			$feed = fetch_feed('http://www.mosleyfamilies.net/tng/tngrss.php');
 			
 			if(!is_wp_error($feed)) {
 				$maxitems = $feed->get_item_quantity();
@@ -318,3 +317,9 @@ class TNG_RSS {
 }
 
 $tng_rss_post_import = new TNG_RSS();
+
+function tng_wp_rss_update() {
+	$rss = new TNG_RSS();
+	
+	$rss->tng_wp_rss_update();
+}
