@@ -1,3 +1,6 @@
+#### 1.4
+* Fix errant URL left in plugin by gremlins.
+
 #### 1.3
 * Make plugin compatible with PHP 5.3 and 5.4.
 
