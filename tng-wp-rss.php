@@ -318,8 +318,8 @@ class TNG_RSS {
 
 $tng_rss_post_import = new TNG_RSS();
 
-function tng_wp_rss_update() {
+add_action('tng_wp_rss_update', 'tng_wp_rss_update_run');
+function tng_wp_rss_update_run() {
 	$rss = new TNG_RSS();
-	
 	$rss->tng_wp_rss_update();
 }
