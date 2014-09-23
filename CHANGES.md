@@ -1,3 +1,6 @@
+#### 1.5
+* Fix missing function.
+
 #### 1.4
 * Fix errant URL left in plugin by gremlins.
 
