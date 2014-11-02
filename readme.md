@@ -21,6 +21,8 @@ View [this](https://gist.github.com/NateJacobs/4b126a2c850b0aa04b68) Github Gist
 
 The following filters are available. All the filters occur before the new post is created.
 
+* tng_wp_rss_post_schedule - change the scheduled event frequency. Will need to use the core ````cron_schedules```` filter to add custom intervals to make the best use of this filter.
+* tng_wp_rss_url - change the TNG RSS URL used to fetch content from.
 * tng_wp_rss_list_class - add a class name to the unordered list element in the post content, defaults to 'list-unstyled'.
 * tng_wp_rss_before_content - add any text or other content just before the list of updates is displayed in the post.
 * tng_wp_rss_after_content - add any text or other content just after the list of updates is displayed in the post.

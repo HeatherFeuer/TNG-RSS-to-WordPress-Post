@@ -1,3 +1,6 @@
+#### 1.6
+* Add two new filters to allow for changing the TNG RSS URL and scheduled event recurrence time.
+
 #### 1.5
 * Fix missing function.
 

@@ -2,7 +2,7 @@
 /*
 Plugin Name: TNG RSS to WordPress Post
 Description: Uses the TNG-WP integration plugin to import the TNG RSS feed and create a new post for each new entry per date.
-Version: 1.5
+Version: 1.6
 Author: Nate Jacobs
 Author URI: http://natejacobs.com
 License: GPL2
@@ -80,8 +80,19 @@ class TNG_RSS {
 	public function activation() {
 		wp_create_category($this->tng_rss_category);	
 		
+		/** 
+		 *	Filter the scheduled recurrence event time.
+		 *
+		 *	@author		Nate Jacobs
+		 *	@date		11/1/14
+		 *	@since		1.6
+		 *
+		 *	@param		string	The cron interval.
+		 */
+		$schedule = apply_filters('tng_wp_rss_post_schedule', 'daily');
+		
 		if(! wp_next_scheduled('tng_wp_rss_update')) {
-			wp_schedule_event(time(), 'daily', 'tng_wp_rss_update');
+			wp_schedule_event(time(), $schedule, 'tng_wp_rss_update');
 		}
 	}
 	
@@ -305,7 +316,16 @@ class TNG_RSS {
 	 *	@since		1.0
 	 */
 	protected function get_tng_rss_url() {
-		$url = get_option('mbtng_url_to_admin');
+		/** 
+		 *	Filter the TNG RSS URL.
+		 *
+		 *	@author		Nate Jacobs
+		 *	@date		11/1/14
+		 *	@since		1.6
+		 *
+		 *	@param		string|bool	The url from the WP-TNG integration plugin.
+		 */
+		$url = apply_filters('tng_wp_rss_url',  get_option('mbtng_url_to_admin'));
 		
 		// there is no admin url set with the TNG/WP integration plugin
 		if(!$url) {
