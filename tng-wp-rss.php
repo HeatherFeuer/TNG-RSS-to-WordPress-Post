@@ -325,14 +325,12 @@ class TNG_RSS {
 		 *
 		 *	@param		string|bool	The url from the WP-TNG integration plugin.
 		 */
-		$url = apply_filters('tng_wp_rss_url',  get_option('mbtng_url_to_admin'));
-		
-		// there is no admin url set with the TNG/WP integration plugin
-		if(!$url) {
-			return false;
-		}
-		
-		return trailingslashit(substr($url, 0, strrpos($url, '/admin.php')));
+		$tng_folder = get_option('mbtng_path');
+		include( $tng_folder.'/config.php' );
+		$url = trailingslashit($tngdomain);
+		$tng_url = apply_filters('tng_wp_rss_url',  $url);
+
+		return trailingslashit(substr($tng_url, 0, strrpos($tng_url, '/admin.php')));
 	}
 }
 
